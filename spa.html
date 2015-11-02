@@ -2,9 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SPA Chapter 1 section 1.2.2</title>
-    <style type="text/css"></style>
-    <script type="text/javascript"></script>
+    <title>SPA Starter</title>
+
+    <!-- スタイルシート -->
+    <link rel="stylesheet" href="css/spa.css" type="text/css"/>
+    <link rel="stylesheet" href="css/spa.shell.css" type="text/css"/>
+
+    <!-- サードパーティjavascript -->
+    <script src="js/jq/jquery-1.11.3.js" ></script>
+    <script src="js/jq/jquery.uriAnchor-1.2.2.js"></script>
+
+    <!-- 本書のjavascript -->
+    <script src="js/spa.js" ></script>
+    <script src="js/spa.shell.js"></script>
+    <script>
+        $(function(){spa.initModule( $('#spa'));});
+    </script>
+
 </head>
 <body>
     <div id="spa"></div>
