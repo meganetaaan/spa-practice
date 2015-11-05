@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>SPA Starter</title>
+    <!-- IE9以降のレンダリングで、最新の標準をサポート -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edte" />
 
-    <!-- スタイルシート -->
+    <title>SPA Chapter 4</title>
+
+    <!-- サードパーティスタイルシート -->
+    <!-- 本書のスタイルシート -->
     <link rel="stylesheet" href="css/spa.css" type="text/css"/>
+    <link rel="stylesheet" href="css/spa.chat.css" type="text/css">
     <link rel="stylesheet" href="css/spa.shell.css" type="text/css"/>
 
     <!-- サードパーティjavascript -->
@@ -14,7 +19,10 @@
 
     <!-- 本書のjavascript -->
     <script src="js/spa.js" ></script>
+    <script src="js/spa.util.js"></script>
+    <script src="js/spa.model.js"></script>
     <script src="js/spa.shell.js"></script>
+    <script src="js/spa.chat.js"></script>
     <script>
         $(function(){spa.initModule( $('#spa'));});
     </script>
