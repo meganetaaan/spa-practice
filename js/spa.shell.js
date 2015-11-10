@@ -11,6 +11,7 @@
 
 /*global $, spa */
 spa.shell = (function () {
+    'use strict';
     // -------------- モジュールスコープ変数開始 --------------
     var
         configMap = {
