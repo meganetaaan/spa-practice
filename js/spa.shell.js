@@ -20,9 +20,12 @@ spa.shell = (function () {
             },
             main_html : String()
           + '<div class="spa-shell-head">'
-              + '<div class="spa-shell-head-logo"></div>'
+              + '<div class="spa-shell-head-logo">'
+              + '<h1>SPA</h1>'
+              + '<p>javascript end to end</p>'
+              + '</div>'
               + '<div class="spa-shell-head-acct"></div>'
-              + '<div class="spa-shell-head-search"></div>'
+              //+ '<div class="spa-shell-head-search"></div>'
           + '</div>'
           + '<div class="spa-shell-main">'
               + '<div class="spa-shell-main-nav"></div>'
@@ -48,6 +51,7 @@ spa.shell = (function () {
 
         copyAnchorMap, setJqueryMap,
         changeAnchorPart, onHashchange, onResize,
+        onTapAcct, onLogin, onLogout,
         setChatAnchor, initModule;
         // ---------------- モジュールスコープ変数終了 ---------
         // ---------------- ユーティリティメソッド開始 ---------
@@ -62,6 +66,8 @@ spa.shell = (function () {
 
             jqueryMap = {
                 $container : $container,
+                $acct      : $container.find('.spa-shell-head-acct'),
+                $nav       : $container.find('.spa-shell-main-nav')
             };
         };
         // DOMメソッド /setJqueryMap/ 終了
@@ -213,6 +219,33 @@ spa.shell = (function () {
         };
         // イベントハンドラ /onResize/ 終了
 
+        // イベントハンドラ /onTapAcct/ 開始
+        onTapAcct = function ( event ) {
+            var acct_text, user_name, user = spa.model.people.get_user();
+            if ( user.get_is_anon() ) {
+                user_name = prompt( 'Please sign-in' );
+                spa.model.people.login( user_name );
+                jqueryMap.$acct.text( '... processing ...' );
+            }
+            else {
+                spa.model.people.logout();
+            }
+            return false;
+        };
+        // イベントハンドラ /onTapAcct/ 終了
+
+        // イベントハンドラ /onLogin/ 開始
+        onLogin = function ( event, login_user ) {
+            jqueryMap.$acct.text( login_user.name );
+        };
+        // イベントハンドラ /onLogin/ 終了
+        
+        // イベントハンドラ /onLogout/ 開始
+        onLogout = function ( event, logout_user ) {
+            jqueryMap.$acct.text( 'Please sign-in' );
+        };
+
+        // イベントハンドラ /onLogout/ 終了
         // ---------------- イベントハンドラ終了 ---------------
 
         // ---------------- コールバック開始 ---------------
@@ -234,6 +267,7 @@ spa.shell = (function () {
         // ---------------- コールバック終了 ---------------
 
         // ---------------- パブリックメソッド開始 -------------
+        // パブリックメソッド /initModule/ 開始
         // 用例：spa.shell.initModule( $('#app_iv_id' );
         // 目的：ユーザに機能を提供するようにチャットに指示する
         // 引数：
@@ -274,21 +308,16 @@ spa.shell = (function () {
                 .bind( 'hashchange', onHashchange )
                 .trigger( 'hashchange' );
 
+
+            $.gevent.subscribe( $container, 'spa-login', onLogin );
+            $.gevent.subscribe( $container, 'spa-logout', onLogout );
+
+            jqueryMap.$acct
+                .text( 'Please sign-in' )
+                .bind( 'utap', onTapAcct );
         };
         // パブリックメソッド /initModule/ 終了
+
         return { initModule : initModule };
         // ---------------- パブリックメソッド終了 ------------
-
-        // コールバックメソッド /setChatAnchor/ 開始
-        // 用例：setChatAnchor( 'closed' );
-        // 目的：アンカーのチャットコンポーネントを変更する。
-        // 引数：
-        //   * position_type -- 「closed」または「opened」
-        // 動作：
-        //   可能ならURIアンカーパラメータ「chat」を要求値に変更する。
-        // 戻り値：
-        //   * true -- 要求されたアンカー部分が更新された
-        //   * false -- 要求されたアンカー部分が更新されなかった
-        // 例外発行：なし
-        // 
 }());
