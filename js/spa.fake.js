@@ -47,7 +47,7 @@ spa.fake = (function () {
         ];
 
     mockSio = (function () {
-        var on_sio, emit_sio,
+        var on_sio, emit_sio, emit_mock_msg,
             send_listchange, listchange_idto,
             callback_map = {};
 
@@ -72,6 +72,47 @@ spa.fake = (function () {
                     callback_map.userupdate([ person_map ]);
                 }, 3000 );
             }
+
+            // 2秒間の遅延後に「updatechat」コールバックで
+            // 「updatechat」イベントに応答する。ユーザ情報を送り返す。
+            if ( msg_type === 'updatechat' && callback_map.updatechat ) {
+                setTimeout( function () {
+                    var user = spa.model.people.get_user();
+                    callback_map.updatechat([{
+                                dest_id : user.id,
+                                dest_name : user.name,
+                                sender_id : data.dest_id,
+                                msg_text : 'Thanks for the note, ' + user.name
+                    }]);
+                }, 2000);
+            }
+
+            if ( msg_type === 'leavechat' ) {
+                // ログイン状態をリセットする
+                delete callback_map.listchange;
+                delete callback_map.updatechat;
+
+                if ( listchange_idto ) {
+                    clearTimeout( listchange_idto );
+                    listchange_idto = undefined;
+                }
+                send_listchange();
+            }
+        };
+
+        emit_mock_msg = function () {
+            setTimeout( function () {
+                var user = spa.model.people.get_user();
+                if ( callback_map.updatechat ) {
+                    callback_map.updatechat([{
+                                dest_id : user.id,
+                                dest_name : user.name,
+                                sender_id : 'id_04',
+                                msg_text : 'Hi there ' + user.name + '! Wilma here.'
+                    }]);
+                }
+                else { emit_mock_msg(); }
+            }, 8000 );
         };
 
         // 1秒に1回listchangeコールバックを使うようにする。
@@ -80,6 +121,7 @@ spa.fake = (function () {
             listchange_idto = setTimeout( function () {
                 if ( callback_map.listchange ) {
                     callback_map.listchange([ peopleList ]);
+                    emit_mock_msg();
                     listchange_idto = undefined;
                 }
                 else { send_listchange(); }

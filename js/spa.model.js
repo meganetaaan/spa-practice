@@ -327,7 +327,7 @@ spa.model = (function (){
             };
 
             // updatechatを発行したので、送信メッセージを表示できる
-            _publish.updatechat( [ msg_map ] );
+            _publish_updatechat( [ msg_map ] );
             sio.emit( 'updatechat', msg_map );
             return true;
         };
