@@ -290,13 +290,19 @@ spa.shell = (function () {
                     schema_map : configMap.anchor_schema_map
             });
 
-            // 機能モジュールを構成してして初期化する
+            // 機能モジュールを構成てして初期化する
             spa.chat.configModule({
                     set_chat_anchor : setChatAnchor,
                     chat_model : spa.model.chat,
                     people_model : spa.model.people
             });
             spa.chat.initModule( jqueryMap.$container );
+
+            spa.avtr.configModule({
+                    chat_model : spa.model.chat,
+                    people_model : spa.model.people
+            });
+            spa.avtr.initModule( jqueryMap.$nav );
 
             // URIアンカー変更イベントを処理する。
             // これはすべての機能モジュールを設定して初期化したあとに行う。
