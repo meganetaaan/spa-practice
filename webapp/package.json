@@ -5,6 +5,7 @@
     "dependencies" : {
         "mongodb"   : "1.x",
         "express" : "3.x",
-        "socket.io" : "1.x"
+        "socket.io" : "1.x",
+        "JSV" : "4.0.x"
     }
 }
