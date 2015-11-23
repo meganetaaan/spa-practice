@@ -18,6 +18,7 @@ var
     mongodb = require( 'mongodb' ),
     fsHandle = require( 'fs' ),
     JSV = require( 'JSV' ).JSV,
+    crud = require( './crud' ),
     
     mongoServer = new mongodb.Server(
         'localhost',

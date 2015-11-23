@@ -18,7 +18,7 @@
 var
     http    = require( 'http'   ),
     express = require( 'express'),
-    routes  = require( './routes' ),
+    routes  = require( './lib/routes' ),
 
     app     = express(),
     server  = http.createServer( app );
