@@ -16,6 +16,7 @@
 var 
     configRoutes,
     crud = require( './crud' ),
+    chat = require( './chat' ),
     makeMongoId = crud.makeMongoId;
 // ------------- モジュールスコープ変数終了 -------------
 // ------------- パブリックメソッド開始 -------------
@@ -72,6 +73,8 @@ configRoutes = function ( app, server ) {
             function ( result_map ) { response.send( result_map ); }
         );
     });
+
+    chat.connect( server );
 };
 module.exports = {configRoutes : configRoutes };
 // ------------- パブリックメソッド終了 -------------
