@@ -15,7 +15,7 @@
 var
     loadSchema, checkSchema, clearIsOnline,
     checkType, constructObj, readObj,
-    updateObj, destroyObj;
+    updateObj, destroyObj,
 
     mongodb = require( 'mongodb' ),
     fsHandle = require( 'fs' ),
@@ -54,7 +54,7 @@ clearIsOnline = function () {
         { is_online : true },
         { is_online : false},
         function ( response_map ) {
-            console.log( 'All users set to offline', respoonse_map );
+            console.log( 'All users set to offline', response_map );
         }
     );
 };
@@ -106,12 +106,82 @@ constructObj = function ( obj_type, obj_map, callback ) {
     );
 };
 
-readObj     = function () {};
-updateObj   = function () {};
-destroyObj  = function () {};
+readObj     = function ( obj_type, find_map, fields_map, callback ) {
+    var type_check_map = checkType( obj_type );
+    if ( type_check_map ) {
+        callback( type_check_map );
+        return;
+    }
+
+    dbHandle.collection(
+        obj_type,
+        function ( outer_error, collection ) {
+            collection.find( find_map, fields_map ).toArray(
+                function ( inner_error, map_list ){
+                    callback( map_list );
+                }
+            );
+        }
+    );
+};
+
+updateObj = function ( obj_type, find_map, set_map, callback ) {
+    var type_check_map = checkType( obj_type );
+    if ( type_check_map ) {
+        callback( type_check_map );
+        return;
+    }
+
+    checkSchema(
+        obj_type, set_map,
+        function ( error_list ) {
+            if ( error_list.length === 0 ) {
+                dbHandle.collection(
+                    obj_type,
+                    function ( outer_error, collection ) {
+                        collection.update(
+                            find_map,
+                            { $set : set_map },
+                            { safe : true, multi : true, upsert : false },
+                            function ( inner_error, update_count ) {
+                                callback({ update_count : update_count });
+                            }
+                        );
+                    }
+                );
+            }
+            else {
+                callback({
+                        error_msg : 'Input document not valid',
+                        error_list : error_list
+                });
+            }
+        }
+    );
+};
+
+destroyObj  = function ( obj_type, find_map, callback ) {
+    var type_check_map = checkType( obj_type );
+    if ( type_check_map ){
+    return;
+    }
+
+    dbHandle.collection(
+        obj_type,
+        function ( outer_error, collection ) {
+            var options_map = { safe: true, single: true };
+
+            collection.remove( find_map, options_map,
+                function ( inner_error, delete_count ) {
+                    callback({ delete_count: delete_count });
+                }
+            );
+        }
+    );
+};
 
 module.exports = {
-    makeMongoId : null,
+    makeMongoId : mongodb.ObjectID,
     checkType : checkType,
     constructObj : constructObj,
     read : readObj,
@@ -120,5 +190,19 @@ module.exports = {
 };
 // ------------- パブリックメソッド終了 -------------
 // ------------- モジュール初期化開始 -------------
-console.log( '** CRUD module loaded **' );
+dbHandle.open( function () {
+    console.log( '** CRUD module loaded **' );
+    clearIsOnline();
+});
+
+// メモリ (objTypeMap)にスキーマをロードする
+(function () {
+        var schema_name, schema_path;
+        for ( schema_name in objTypeMap ) {
+            if ( objTypeMap.hasOwnProperty( schema_name ) ) {
+                schema_path = __dirname + '/' + schema_name + '.json';
+                loadSchema( schema_name, schema_path );
+            }
+        }
+}());
 // ------------- モジュール初期化終了 -------------
