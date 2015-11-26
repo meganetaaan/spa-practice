@@ -183,7 +183,7 @@ destroyObj  = function ( obj_type, find_map, callback ) {
 module.exports = {
     makeMongoId : mongodb.ObjectID,
     checkType : checkType,
-    constructObj : constructObj,
+    construct : constructObj,
     read : readObj,
     update : updateObj,
     destroy : destroyObj

@@ -10,7 +10,7 @@
   white : true
   */
 
-/*global $, spa */
+/*global $, io, spa */
 spa.data = (function () { 
     'use strict';
     var
