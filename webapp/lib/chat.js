@@ -134,7 +134,7 @@ chatObj = {
                 //    受信者がオンラインの場合、受信者にchat_mapを送信する。
                 //    オンラインではない場合、「user has gone offline」というメッセージを送信者に送信する。
                 //
-                socket.on( 'updatechat', function () {
+                socket.on( 'updatechat', function ( chat_map ) {
                     if ( chatterMap.hasOwnProperty( chat_map.dest_id ) ) {
                         chatterMap[ chat_map.dest_id ]
                             .emit( 'updatechat', chat_map );
