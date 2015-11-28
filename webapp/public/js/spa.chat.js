@@ -373,7 +373,7 @@ spa.chat = (function () {
         writeChat( sender.name, msg_text, is_user );
 
         if ( is_user ) {
-            jqueryMap.$input_val( '' );
+            jqueryMap.$input.val( '' );
             jqueryMap.$input.focus();
         }
     };

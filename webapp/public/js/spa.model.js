@@ -323,7 +323,7 @@ spa.model = (function (){
             msg_map = {
                 dest_id : chatee.id,
                 dest_name : chatee.name,
-                sender_id : stateMap.user.is,
+                sender_id : stateMap.user.id,
                 msg_text : msg_text
             };
 
