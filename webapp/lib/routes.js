@@ -22,6 +22,19 @@ var
 // ------------- パブリックメソッド開始 -------------
 configRoutes = function ( app, server ) {
 
+    var agent_text =
+          + 'Enter the modern single page web application(SPA).'
+      + 'Width the near universal availability of capable browsers and '
+      + 'poserful hardware, we can push most of the web application to'
+       + 'the browser; including HTML rendering, data, and business '
+       + 'logic. The only time a cilent needs to communicate with the '
+       + 'server is to authenticate or synchronize data This means users'
+        + 'get a fulid, comfortable experience whether they\' re surfing'
+        + 'at their desk or using a phone app on a sketch 3G connection.'
+        + '<br><br>'
+        + '<a href="/index.htm#page=home">;Home</a><br>'
+        + '<a href="/index.htm#page=about">About</a><br>'
+        + '<a href="/index.htm#page=buynow';
     // 以下の設定はすべてルート用
     app.get('/', function ( request, response ) {
         response.redirect( '/spa.html' );
