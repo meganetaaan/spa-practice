@@ -280,13 +280,6 @@ spa.shell = (function () {
         // 例外発行：なし
         //
         initModule = function ( $container ){
-            var data_mode_str;
-
-            // URIクエリ引数が設定されている場合はデータをフェイクにする
-            data_mode_str
-                = window.location.search === '?fake'
-                ? 'fake' : 'live';
-            spa.model.setDataMode( data_mode_str );
             // HTMLをロードし、jQueryコレクションをマッピングする
             stateMap.$container = $container;
             $container.html( configMap.main_html );

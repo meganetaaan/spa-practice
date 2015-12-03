@@ -102,6 +102,7 @@ chatObj = {
                             var
                                 result_map,
                                 cid = user_map.cid;
+
                             delete user_map.cid;
 
                             // 指定の名前を持つ既存ユーザを使う

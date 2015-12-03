@@ -22,11 +22,10 @@ spa.model = (function (){
             is_connected : false
         },
 
-        isFakeData = true,
+        isFakeData = false,
 
         personProto, makeCid, clearPeopleDb, completeLogin,
-        makePerson, removePerson, people, chat, initModule,
-        setDataMode;
+        makePerson, removePerson, people, chat, initModule;
 
     // peopleオブジェクトAPI
     // ---------------------
@@ -171,7 +170,6 @@ spa.model = (function (){
             $.gevent.publish( 'spa-logout', [ user ] );
             return is_removed;
         };
-
 
         return {
             get_by_cid : get_by_cid,
@@ -384,15 +382,11 @@ spa.model = (function (){
         });
         stateMap.user = stateMap.anon_user;
     };
-    setDataMode = function ( arg_str ) {
-        isFakeData = arg_str === 'fake'
-        ? true : false;
-    };
 
     return {
         initModule : initModule,
         chat : chat,
-        people : people,
-        setDataMode: setDataMode
+        people : people
     };
 }());
+
