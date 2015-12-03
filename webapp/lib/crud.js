@@ -20,6 +20,7 @@ var
     mongodb = require( 'mongodb' ),
     fsHandle = require( 'fs' ),
     JSV = require( 'JSV' ).JSV,
+    cache   = require( './cache' ),
 
     mongoServer = new mongodb.Server(
         'localhost',
@@ -113,16 +114,19 @@ readObj     = function ( obj_type, find_map, fields_map, callback ) {
         return;
     }
 
-    dbHandle.collection(
-        obj_type,
-        function ( outer_error, collection ) {
-            collection.find( find_map, fields_map ).toArray(
-                function ( inner_error, map_list ){
-                    callback( map_list );
-                }
-            );
-        }
-    );
+    cache.getValue( find_map, callback, function () {
+        dbHandle.collection(
+            obj_type,
+            function ( outer_error, collection ) {
+                collection.find( find_map, fields_map ).toArray(
+                    function ( inner_error, map_list ){
+                        cache.setValue( find_map, map_list );
+                        callback( map_list );
+                    }
+                );
+            }
+        );
+    });
 };
 
 updateObj = function ( obj_type, find_map, set_map, callback ) {
@@ -166,6 +170,7 @@ destroyObj  = function ( obj_type, find_map, callback ) {
     return;
     }
 
+    cache.deleteKey( find_map );
     dbHandle.collection(
         obj_type,
         function ( outer_error, collection ) {
