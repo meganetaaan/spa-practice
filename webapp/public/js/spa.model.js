@@ -22,10 +22,11 @@ spa.model = (function (){
             is_connected : false
         },
 
-        isFakeData = false,
+        isFakeData = true,
 
         personProto, makeCid, clearPeopleDb, completeLogin,
-        makePerson, removePerson, people, chat, initModule;
+        makePerson, removePerson, people, chat, initModule,
+        setDataMode;
 
     // peopleオブジェクトAPI
     // ---------------------
@@ -383,10 +384,16 @@ spa.model = (function (){
         stateMap.user = stateMap.anon_user;
     };
 
+    setDataMode = function ( arg_str ) {
+        isFakeData = arg_str === 'fake'
+            ? true : false;
+    };
+
     return {
         initModule : initModule,
         chat : chat,
-        people : people
+        people : people,
+        setDataMode : setDataMode
     };
 }());
 
